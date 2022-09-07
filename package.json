@@ -1,0 +1,19 @@
+{
+  "name": "rest-api",
+  "version": "1.0.0",
+  "description": "Rest api para app petrobras",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "java",
+    "js"
+  ],
+  "author": "Gabriel Rudrigues Lima",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
