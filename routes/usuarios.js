@@ -166,8 +166,10 @@ router.get('/:id_usuario', (req, res, next) => {
                 bcrypt.compare(req.body.senha, resultado[0].senha, (err, resultado) => {
                     if (err) {
                         return res.status(401).send({
-                            error: "Falha na autenticação",
-                            situation: 0
+                            // error: "Falha na autenticação",
+                            // situation: 0
+                            "error":true,
+                            "message":"vai aonde",
                         });
                     }
                     if (resultado) {
@@ -186,8 +188,10 @@ router.get('/:id_usuario', (req, res, next) => {
                     }
 
                     return res.status(401).send({
-                        error: "Falha na autenticação",
-                        situation: 0,
+                        // error: "Falha na autenticação",
+                        // situation: 0,
+                        "error":true,
+                            "message":"vai aonde",
                     });
                 })
             });
