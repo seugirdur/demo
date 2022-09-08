@@ -179,7 +179,7 @@ router.get('/:id_usuario', (req, res, next) => {
                         return res.status(200).send({
                             mensagem:"Autenticado com sucesso",
                             situation:1,
-                            "chave":resultado[0].chave
+                            "chave":req.body.chave
                         });
                     }
 
