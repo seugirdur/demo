@@ -160,7 +160,7 @@ router.get('/:id_usuario', (req, res, next) => {
                     return res.status(200).send({
                         //error: "Falha na autenticação",
                         //situation: 0,
-                        //"error":null,
+                        "error":true,
                         "message":"vai aonde",
                     });
                 }
@@ -170,7 +170,7 @@ router.get('/:id_usuario', (req, res, next) => {
                         return res.status(200).send({
                             // error: "Falha na autenticação",
                             //situation: 0,
-                            //"error":null,
+                            "error":true,
                             "message":"vai aonde",
                         });
                     }
@@ -192,7 +192,7 @@ router.get('/:id_usuario', (req, res, next) => {
                     return res.status(200).send({
                         // error: "Falha na autenticação",
                          //situation: 0,
-                        //"error":null,
+                        "error":true,
                             "message":"vai aonde",
                     });
                 })
