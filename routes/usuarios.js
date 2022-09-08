@@ -159,7 +159,8 @@ router.get('/:id_usuario', (req, res, next) => {
                 if (resultado.length < 1 ) {
                     return res.status(401).send({
                         //error: "Falha na autenticação",
-                        situation: 0,
+                        //situation: 0,
+                        "error":null,
                         "message":"vai aonde",
                     });
                 }
@@ -168,8 +169,8 @@ router.get('/:id_usuario', (req, res, next) => {
                     if (err) {
                         return res.status(401).send({
                             // error: "Falha na autenticação",
-                            situation: 0,
-                            //"error":true,
+                            //situation: 0,
+                            "error":null,
                             "message":"vai aonde",
                         });
                     }
@@ -181,8 +182,8 @@ router.get('/:id_usuario', (req, res, next) => {
                         )
                         return res.status(200).send({
                             // mensagem:"Autenticado com sucesso",
-                            situation:1,
-                            //"error":null,
+                            //situation:1,
+                            "error":null,
                             "message":"eu loguei filho da puta",
                             //"user":req.body.chave
                         });
@@ -190,8 +191,8 @@ router.get('/:id_usuario', (req, res, next) => {
 
                     return res.status(401).send({
                         // error: "Falha na autenticação",
-                         situation: 0,
-                        //"error":true,
+                         //situation: 0,
+                        "error":null,
                             "message":"vai aonde",
                     });
                 })
