@@ -181,7 +181,7 @@ router.get('/:id_usuario', (req, res, next) => {
                             // situation:1,
                             "error":null,
                             "message":"eu loguei filho da puta",
-                            "user":req.body.chave
+                            //"user":req.body.chave
                         });
                     }
 
