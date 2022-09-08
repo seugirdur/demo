@@ -177,9 +177,9 @@ router.get('/:id_usuario', (req, res, next) => {
                         process.env.JWT_KEY
                         )
                         return res.status(200).send({
-                            mensagem:"Autenticado com sucesso",
-                            situation:1,
-                            "chave":req.body.chave
+                            // mensagem:"Autenticado com sucesso",
+                            // situation:1,
+                            "user":req.body.chave
                         });
                     }
 
