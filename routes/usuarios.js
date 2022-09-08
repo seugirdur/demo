@@ -180,6 +180,7 @@ router.get('/:id_usuario', (req, res, next) => {
                             // mensagem:"Autenticado com sucesso",
                             // situation:1,
                             "error":null,
+                            "message":"eu loguei filho da puta",
                             "user":req.body.chave
                         });
                     }
