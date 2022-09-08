@@ -55,7 +55,7 @@ router.post('/cadastro', (req, res, next) => {
                 
             }
             if (resultado.length > 0) {
-                res.status(409).send({
+                res.status(200).send({
                     mensagem: "Usuário já cadastrado",
                     situation: 0
                 })
@@ -157,7 +157,7 @@ router.get('/:id_usuario', (req, res, next) => {
                 }
 
                 if (resultado.length < 1 ) {
-                    return res.status(401).send({
+                    return res.status(200).send({
                         //error: "Falha na autenticação",
                         //situation: 0,
                         "error":null,
@@ -167,7 +167,7 @@ router.get('/:id_usuario', (req, res, next) => {
 
                 bcrypt.compare(req.body.senha, resultado[0].senha, (err, resultado) => {
                     if (err) {
-                        return res.status(401).send({
+                        return res.status(200).send({
                             // error: "Falha na autenticação",
                             //situation: 0,
                             "error":null,
@@ -189,7 +189,7 @@ router.get('/:id_usuario', (req, res, next) => {
                         });
                     }
 
-                    return res.status(401).send({
+                    return res.status(200).send({
                         // error: "Falha na autenticação",
                          //situation: 0,
                         "error":null,
