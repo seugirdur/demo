@@ -172,9 +172,7 @@ router.get('/:id_usuario', (req, res, next) => {
                     }
                     if (resultado) {
                         let token = jwt.sign({
-                            id_usuario: resultado[0].id,
-                            email: resultado[0].email
-
+                            batata:"batata"
                         }, 
                         process.env.JWT_KEY
                         )
