@@ -8,7 +8,7 @@ router.get('/', (req, res, next) => {
     //     mensagem: 'Usando o GET dentro da rota de usuarios'
     // });
     mysql.getConnection((error, conn) => {
-
+        
     if (error) {
         return res.status(500).send({error: error});
     }
@@ -16,15 +16,18 @@ router.get('/', (req, res, next) => {
         'SELECT * FROM Internet',
         (error, resultado, fields) => {
             conn.release();
+            result = resultado.map(prod => {
+                return {
+                    "nombre": prod.idTitulo,
+                }
+            })
         if (error) {
             return res.status(500).send({
                 error: error
             });
             
         }
-        return res.status(200).send({
-            response: resultado
-        });
+        return res.status(200).json(resultado)
     }
     )});
 });
