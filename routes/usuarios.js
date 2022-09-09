@@ -189,11 +189,11 @@ router.get('/:chave', (req, res, next) => {
                         )
 
                         
-                            resultado.map(prod => {
-                                return {
-                                    "nombre": prod.nome,
-                                }
-                            })
+                            // resultado.map(prod => {
+                            //     return {
+                            //         "nombre": prod.nome,
+                            //     }
+                            // })
                         
                         
                         return res.status(200).send({
@@ -207,8 +207,8 @@ router.get('/:chave', (req, res, next) => {
                             // "dataNasc": resultado.dataNasc,
                             // "chave": req.body.chave,
                             // response: 
-                            //"user":req.body.chave
-                            "UserAPI":resultado
+                            "user":req.body.chave
+                           // "UserAPI":resultado
                             
                         });
                     }
