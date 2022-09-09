@@ -161,7 +161,7 @@ router.get('/:id_usuario', (req, res, next) => {
                         //error: "Falha na autenticação",
                         //situation: 0,
                         "error":true,
-                        "message":"Usuario já cadastrado",
+                        "message":"Falha na autenticação",
                         
                     });
                 } 
