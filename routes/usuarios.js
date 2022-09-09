@@ -3,6 +3,7 @@ const router = express.Router();
 const mysql = require('../mysql').pool;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { response } = require('express');
 
 // router.get('/', (req, res, next) => {
 //     // res.status(200).send({
@@ -150,6 +151,9 @@ router.get('/:chave', (req, res, next) => {
             const query = `SELECT * FROM funcionarios WHERE chave = ?;`;
             conn.query(query, [req.body.chave], (error, resultado, fields) => {
                 conn.release();
+                
+
+                
                 if (error) {
                     return res.status(500).send({
                             error: error
@@ -166,28 +170,46 @@ router.get('/:chave', (req, res, next) => {
                     });
                 } 
 
-                bcrypt.compare(req.body.senha, resultado[0].senha, (err, resultado) => {
-                    if (err) {
-                        return res.status(200).send({
-                            // error: "Falha na autenticação",
-                            //situation: 0,
-                            "error":true,
-                            "message":"Falha no login",
-                        });
-                    }
+                
+
+                //bcrypt.compare(req.body.senha, resultado[0].senha, (err, resultado) => {
+                    // if (err) {
+                    //     return res.status(200).send({
+                    //         // error: "Falha na autenticação",
+                    //         //situation: 0,
+                    //         "error":true,
+                    //         "message":"Falha no login",
+                    //     });
+                    // }
                     if (resultado) {
                         let token = jwt.sign({
                             batata:"batata"
                         }, 
                         process.env.JWT_KEY
                         )
+
+                        
+                            resultado.map(prod => {
+                                return {
+                                    "nombre": prod.nome,
+                                }
+                            })
+                        
+                        
                         return res.status(200).send({
                             // mensagem:"Autenticado com sucesso",
                             //situation:1,
                             "error":null,
                             "message":"Login feito com sucesso",
-                            "hashlogin":req.body.chave
+                            // "nome": resultado.nome,
+                            // "email": resultado.email,
+                            // "tel": resultado.tel,
+                            // "dataNasc": resultado.dataNasc,
+                            // "chave": req.body.chave,
+                            // response: 
                             //"user":req.body.chave
+                            "UserAPI":resultado
+                            
                         });
                     }
 
@@ -197,7 +219,7 @@ router.get('/:chave', (req, res, next) => {
                         "error":true,
                             "message":"Falha no Login, tente novamente",
                     });
-                })
+                //})
             });
 
         });
