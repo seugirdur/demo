@@ -162,6 +162,7 @@ router.get('/:id_usuario', (req, res, next) => {
                         //situation: 0,
                         "error":true,
                         "message":"Usuario já cadastrado",
+                        
                     });
                 } 
 
@@ -184,7 +185,8 @@ router.get('/:id_usuario', (req, res, next) => {
                             // mensagem:"Autenticado com sucesso",
                             //situation:1,
                             "error":null,
-                            "message":"Login realizado, bem vindo "+resultado[0].nome,
+                            "message":"Login feito com sucesso",
+                            "hashlogin":req.body.chave
                             //"user":req.body.chave
                         });
                     }
