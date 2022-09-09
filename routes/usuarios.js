@@ -161,9 +161,9 @@ router.get('/:id_usuario', (req, res, next) => {
                         //error: "Falha na autenticação",
                         //situation: 0,
                         "error":true,
-                        "message":"vai aonde",
+                        "message":"Usuario já cadastrado",
                     });
-                }
+                } 
 
                 bcrypt.compare(req.body.senha, resultado[0].senha, (err, resultado) => {
                     if (err) {
@@ -171,7 +171,7 @@ router.get('/:id_usuario', (req, res, next) => {
                             // error: "Falha na autenticação",
                             //situation: 0,
                             "error":true,
-                            "message":"vai aonde",
+                            "message":"Falha no login",
                         });
                     }
                     if (resultado) {
@@ -184,7 +184,7 @@ router.get('/:id_usuario', (req, res, next) => {
                             // mensagem:"Autenticado com sucesso",
                             //situation:1,
                             "error":null,
-                            "message":"eu loguei filho da puta",
+                            "message":"Login realizado, bem vindo "+resultado[0].nome,
                             //"user":req.body.chave
                         });
                     }
@@ -193,7 +193,7 @@ router.get('/:id_usuario', (req, res, next) => {
                         // error: "Falha na autenticação",
                          //situation: 0,
                         "error":true,
-                            "message":"vai aonde",
+                            "message":"Falha no Login, tente novamente",
                     });
                 })
             });
