@@ -4,31 +4,31 @@ const mysql = require('../mysql').pool;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-router.get('/', (req, res, next) => {
-    // res.status(200).send({
-    //     mensagem: 'Usando o GET dentro da rota de usuarios'
-    // });
-    mysql.getConnection((error, conn) => {
+// router.get('/', (req, res, next) => {
+//     // res.status(200).send({
+//     //     mensagem: 'Usando o GET dentro da rota de usuarios'
+//     // });
+//     mysql.getConnection((error, conn) => {
 
-    if (error) {
-        return res.status(500).send({error: error});
-    }
-    conn.query(
-        'SELECT * FROM funcionarios',
-        (error, resultado, fields) => {
-            conn.release();
-        if (error) {
-            return res.status(500).send({
-                error: error
-            });
+//     if (error) {
+//         return res.status(500).send({error: error});
+//     }
+//     conn.query(
+//         'SELECT * FROM funcionarios',
+//         (error, resultado, fields) => {
+//             conn.release();
+//         if (error) {
+//             return res.status(500).send({
+//                 error: error
+//             });
             
-        }
-        return res.status(200).send({
-            response: resultado
-        });
-    }
-    )});
-});
+//         }
+//         return res.status(200).send({
+//             response: resultado
+//         });
+//     }
+//     )});
+// });
 
 router.post('/cadastro', (req, res, next) => {
 
@@ -109,15 +109,15 @@ router.post('/cadastro', (req, res, next) => {
     
 });
 
-router.get('/:id_usuario', (req, res, next) => {
+router.get('/:chave', (req, res, next) => {
     mysql.getConnection((error, conn) => {
 
         if (error) {
             return res.status(500).send({error: error});
         }
         conn.query(
-            'SELECT * FROM funcionarios WHERE id = ?;',
-            [req.params.id_usuario],
+            'SELECT * FROM funcionarios WHERE chave = ?;',
+            [req.params.chave],
             (error, resultado, fields) => {
                 conn.release();
             if (error) {
