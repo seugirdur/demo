@@ -4,9 +4,7 @@ const mysql = require('../mysql').pool;
 const { response } = require('express');
 
 router.get('/', (req, res, next) => {
-    // res.status(200).send({
-    //     mensagem: 'Usando o GET dentro da rota de usuarios'
-    // });
+
     mysql.getConnection((error, conn) => {
         
     if (error) {

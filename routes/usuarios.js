@@ -5,32 +5,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { response } = require('express');
 
-// router.get('/', (req, res, next) => {
-//     // res.status(200).send({
-//     //     mensagem: 'Usando o GET dentro da rota de usuarios'
-//     // });
-//     mysql.getConnection((error, conn) => {
 
-//     if (error) {
-//         return res.status(500).send({error: error});
-//     }
-//     conn.query(
-//         'SELECT * FROM funcionarios',
-//         (error, resultado, fields) => {
-//             conn.release();
-//         if (error) {
-//             return res.status(500).send({
-//                 error: error
-//             });
-            
-//         }
-//         return res.status(200).send({
-//             response: resultado
-//         });
-//     }
-//     )});
-// });
-
+//ROTA DE CADASTRO DO USUARIO
 router.post('/cadastro', (req, res, next) => {
 
     const usuario = {
@@ -44,187 +20,186 @@ router.post('/cadastro', (req, res, next) => {
 
     mysql.getConnection((error, conn) => {
         if (error) {
-            return res.status(500).send({error: error});
+            return res.status(500).send({ error: error });
         }
-        
+
         conn.query("SELECT * FROM funcionarios WHERE chave = ?",
-        [req.body.chave], (error, resultado) => {
+            [req.body.chave], (error, resultado) => {
 
 
-            if (error) {
-                return res.status(500).send({error: error});
-                
-            }
-            if (resultado.length > 0) {
-                res.status(200).send({
-                    mensagem: "Usuário já cadastrado",
-                    situation: 0
-                })
-            } else {
+                if (error) {
+                    return res.status(500).send({ error: error });
 
-                bcrypt.hash(req.body.senha, 10, (errBcrypt, hash) => {
-                    if (errBcrypt) {
-                        return res.status(500).send({
-                            error: errBcrypt
-                        });
-                    }
-        
-                    conn.query(
-                        `INSERT INTO funcionarios 
-                            (nome, email, tel, dataNasc, chave, senha) 
-                        values 
-                            (?,?,?,?,?,?)`,
-                        [req.body.nome,
-                        req.body.email,
-                        req.body.tel,
-                        req.body.dataNasc,
-                        req.body.chave,
-                        hash],
-                        (error, resultado, field) => {
-                            conn.release();
-                            if (error) {
-                                return res.status(500).send({
-                                    error: error,
-                                    response: null
-                                });
-                                
-                            }
-                            res.status(201).send({
-                                mensagem: 'Usuario cadastrado com sucesso',
-                                situation: 1
+                }
+                if (resultado.length > 0) {
+                    res.status(200).send({
+                        mensagem: "Usuário já cadastrado",
+                        situation: 0
+                    })
+                } else {
+
+                    bcrypt.hash(req.body.senha, 10, (errBcrypt, hash) => {
+                        if (errBcrypt) {
+                            return res.status(500).send({
+                                error: errBcrypt
                             });
                         }
-                    );
-        
-                });
-                
+                        
+
+                            conn.query(
+                                
+                                `INSERT INTO funcionarios 
+                                (nome, email, tel, dataNasc, chave, senha, hashlogin) 
+                            VALUES 
+                                (?,?,?,?,?,?)`,
+
+                                [req.body.nome,
+                                req.body.email,
+                                req.body.tel,
+                                req.body.dataNasc,
+                                req.body.chave,
+                                hash],
+
+                                (error, resultado, field) => {
+                                    conn.release();
+                                    if (error) {
+                                        return res.status(500).send({
+                                            error: error,
+                                            response: null
+                                        });
+
+                                    }
+                                    res.status(201).send({
+                                        mensagem: 'Usuario cadastrado com sucesso',
+                                        situation: 1
+                                    });
+                                }
+                            );
+                        
+                    })
+                }
             }
-            
-        })
-
-        
-        
-
+        );
     });
-
-    
 });
 
+
+//ROTA PARA USUARIO ESPECIFICO
 router.get('/:chave', (req, res, next) => {
     mysql.getConnection((error, conn) => {
-
         if (error) {
-            return res.status(500).send({error: error});
+            return res.status(500).send({ error: error });
         }
+
+        // bcrypt.hash(req.body.chave, 10, (errBcrypt, hashlogin) => {
+        //     if (errBcrypt) {
+        //         return res.status(500).send({
+        //             error: errBcrypt
+        //         });
+        //     }
         conn.query(
             'SELECT * FROM funcionarios WHERE chave = ?;',
             [req.params.chave],
             (error, resultado, fields) => {
                 conn.release();
-            if (error) {
-                return res.status(500).send({
-                    error: error
+                if (error) {
+                    return res.status(500).send({
+                        error: error
+                    });
+                }
+
+                if (resultado.length == 0) {
+                    return res.status(404).send({
+                        mensagem: "Usuario não encontrado"
+                    })
+                }
+
+                
+                return res.status(200).send({
+                    response: resultado
                 });
                 
             }
+        )
+    })
+    // });
+});
 
-            if (resultado.length == 0) {
-                return res.status(404).send ({
-                    mensagem: "Usuario não encontrado"
-                })
-                
-            }
-            return res.status(200).send({
-                response: resultado
-            });
+
+//ROTA PARA LOGIN
+router.post('/login', (req, res, next) => {
+    mysql.getConnection((error, conn) => {
+        if (error) {
+            return res.status(500).send({
+                error: error
+            })
         }
-        )});
-    });
-
-    router.post('/login', (req, res, next) => {
-        mysql.getConnection((error, conn) => {
-            if (error) {
+        bcrypt.hash(req.body.chave, 10, (errBcrypt, hashforlogin) => {
+            if (errBcrypt) {
                 return res.status(500).send({
-                    error: error
-                })
+                    error: errBcrypt
+                });
             }
             const query = `SELECT * FROM funcionarios WHERE chave = ?;`;
             conn.query(query, [req.body.chave], (error, resultado, fields) => {
                 conn.release();
-                
 
-                
                 if (error) {
                     return res.status(500).send({
-                            error: error
+                        error: error
                     });
                 }
 
-                if (resultado.length < 1 ) {
+                //CONFERINDO SE O USUARIO EXISTE
+                if (resultado.length < 1) {
                     return res.status(200).send({
-                        //error: "Falha na autenticação",
-                        //situation: 0,
-                        "error":true,
-                        "message":"Falha na autenticação",
-                        
+                        "error": true,
+                        "message": "Falha na autenticação",
                     });
-                } 
+                }
 
-                
-
-                //bcrypt.compare(req.body.senha, resultado[0].senha, (err, resultado) => {
-                    // if (err) {
-                    //     return res.status(200).send({
-                    //         // error: "Falha na autenticação",
-                    //         //situation: 0,
-                    //         "error":true,
-                    //         "message":"Falha no login",
-                    //     });
-                    // }
-                    if (resultado) {
-                        let token = jwt.sign({
-                            batata:"batata"
-                        }, 
-                        process.env.JWT_KEY
-                        )
-
-                        
-                            // resultado.map(prod => {
-                            //     return {
-                            //         "nombre": prod.nome,
-                            //     }
-                            // })
-                        
-                        
+                //BCRYPT CONFERINDO SENHA DIGITADA COM A SENHA CRIPTOGRAFADA REGISTRADA NO MYSQL
+                /*OBS DENTRO DO BCRYPT O 'resultado' SE TORNA UM BOOLEAN, LOGO ELE NÂO RETORNA
+                  AS INFOS DO USUARIO LOGADO PARA GUARDAR NO APLICATIVO*/
+                bcrypt.compare(req.body.senha, resultado[0].senha, (err, resultado) => {
+                    if (err) {
                         return res.status(200).send({
-                            // mensagem:"Autenticado com sucesso",
-                            //situation:1,
-                            "error":null,
-                            "message":"Login feito com sucesso",
-                            // "nome": resultado.nome,
-                            // "email": resultado.email,
-                            // "tel": resultado.tel,
-                            // "dataNasc": resultado.dataNasc,
-                            // "chave": req.body.chave,
-                            // response: 
-                            "hashlogin":req.body.chave
-                           // "UserAPI":resultado
-                            
+                            "error": true,
+                            "message": "Falha no login",
+                            "UserAPI": resultado,
+
                         });
                     }
+                    if (resultado) {
+                        let token = jwt.sign({
+                            batata: "batata"
+                        },
+                            process.env.JWT_KEY
+                        )
 
+
+                        return res.status(200).send({
+                            "error": null,
+                            "message": "Login feito com sucesso",
+                            "hashlogin": req.body.chave,
+                            "hashsenha": req.body.senha,
+                            // resultado devolve o valor true em vez de um JSON
+                            "UserAPI": resultado,
+                        });
+                    }
                     return res.status(200).send({
-                        // error: "Falha na autenticação",
-                         //situation: 0,
-                        "error":true,
-                            "message":"Falha no Login, tente novamente",
+                        "error": true,
+                        "message": "Falha no Login, tente novamente",
+                        "UserAPI": resultado,
+
                     });
-                //})
+                });
             });
-
         });
+
     });
+});
 
 
-    
+
 module.exports = router;
