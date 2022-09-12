@@ -152,20 +152,18 @@ router.post('/login', (req, res, next) => {
                         "message": "Falha na autenticação",
                     });
                 }
-
                 //BCRYPT CONFERINDO SENHA DIGITADA COM A SENHA CRIPTOGRAFADA REGISTRADA NO MYSQL
                 /*OBS DENTRO DO BCRYPT O 'resultado' SE TORNA UM BOOLEAN, LOGO ELE NÂO RETORNA
                   AS INFOS DO USUARIO LOGADO PARA GUARDAR NO APLICATIVO*/
-                bcrypt.compare(req.body.senha, resultado[0].senha, (err, resultado) => {
+                bcrypt.compare(req.body.senha, resultado[0].senha, (err, result) => {
                     if (err) {
                         return res.status(200).send({
                             "error": true,
                             "message": "Falha no login",
-                            "UserAPI": resultado,
 
                         });
                     }
-                    if (resultado) {
+                    if (result) {
                         let token = jwt.sign({
                             batata: "batata"
                         },
@@ -174,17 +172,12 @@ router.post('/login', (req, res, next) => {
                         return res.status(200).send({
                             "error": null,
                             "message": "Login feito com sucesso",
-                            "hashlogin": req.body.chave,
-                            "hashsenha": req.body.senha,
-                            // resultado devolve o valor true em vez de um JSON
-                            
                             "resultado": resultado,
                         });
                     }
                     return res.status(200).send({
                         "error": true,
                         "message": "Falha no Login, tente novamente",
-                        "UserAPI": resultado,
 
                     });
                 });
