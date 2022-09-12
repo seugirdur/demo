@@ -172,7 +172,7 @@ router.post('/login', (req, res, next) => {
                         return res.status(200).send({
                             "error": null,
                             "message": "Login feito com sucesso",
-                            "userAPI": resultado,
+                            "UserAPIList": resultado,
                         });
                     }
                     return res.status(200).send({
