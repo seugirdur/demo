@@ -134,12 +134,7 @@ router.post('/login', (req, res, next) => {
                 error: error
             })
         }
-        bcrypt.hash(req.body.chave, 10, (errBcrypt, hashforlogin) => {
-            if (errBcrypt) {
-                return res.status(500).send({
-                    error: errBcrypt
-                });
-            }
+        
             const query = `SELECT * FROM funcionarios WHERE chave = ?;`;
             conn.query(query, [req.body.chave], (error, resultado, fields) => {
                 conn.release();
@@ -176,15 +171,14 @@ router.post('/login', (req, res, next) => {
                         },
                             process.env.JWT_KEY
                         )
-
-
                         return res.status(200).send({
                             "error": null,
                             "message": "Login feito com sucesso",
                             "hashlogin": req.body.chave,
                             "hashsenha": req.body.senha,
                             // resultado devolve o valor true em vez de um JSON
-                            "UserAPI": resultado,
+                            
+                            "resultado": resultado,
                         });
                     }
                     return res.status(200).send({
@@ -195,7 +189,7 @@ router.post('/login', (req, res, next) => {
                     });
                 });
             });
-        });
+        
 
     });
 });
