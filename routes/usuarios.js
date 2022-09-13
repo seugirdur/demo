@@ -169,11 +169,13 @@ router.post('/login', (req, res, next) => {
                         },
                             process.env.JWT_KEY
                         )
-                        return res.status(200).send({
-                            "error": null,
-                            "message": "Login feito com sucesso",
-                            "UserAPIList": resultado,
-                        });
+                        // return res.status(200).send({
+                        //    "error":null,
+                        //     resultado
+                        // });
+
+                        return res.status(200).json(resultado);
+
                     }
                     return res.status(200).send({
                         "error": true,
